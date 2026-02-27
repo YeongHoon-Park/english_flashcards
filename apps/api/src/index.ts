@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 
-import { testMessage } from '@repo/schema';
+import { Word, testMessage } from '@repo/schema';
 
 const app = express();
 const port = 3001;
@@ -13,6 +13,18 @@ app.get('/', (req, res) => {
     message: 'Hello from Express Server!',
     sharedMessage: testMessage,
   });
+});
+
+app.get('/api/words', (req, res) => {
+  const mockWords: Word[] = [
+    { id: '1', term: 'Serendipity', definition: '뜻밖의 발견 (우연한 행운)' },
+    { id: '2', term: 'Ephemeral', definition: '수명이 짧은, 덧없는' },
+    { id: '3', term: 'Ubiquitous', definition: '어디에나 있는, 아주 흔한' },
+  ];
+
+  setTimeout(() => {
+    res.json(mockWords);
+  }, 1000);
 });
 
 app.listen(port, () => {
