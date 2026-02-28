@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { fetchWords } from '@src/api';
+
 import './App.css';
-import { fetchWords } from './api';
 
 const App = () => {
   const {
