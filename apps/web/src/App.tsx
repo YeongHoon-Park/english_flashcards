@@ -1,7 +1,7 @@
+import '@/App.css';
 import { fetchWords } from '@/api';
+import { WordCard } from '@/components';
 import { useQuery } from '@tanstack/react-query';
-
-import './App.css';
 
 const App = () => {
   const {
@@ -34,15 +34,7 @@ const App = () => {
       {words && (
         <div className='gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full max-w-5xl'>
           {words.map((word) => (
-            <div
-              key={word.id}
-              className='group bg-white shadow-sm hover:shadow-md p-6 border border-slate-100 rounded-2xl transition-shadow cursor-pointer'
-            >
-              <h2 className='mb-2 font-bold text-blue-600 group-hover:text-blue-700 text-2xl'>
-                {word.term}
-              </h2>
-              <p className='text-slate-600 text-lg'>{word.definition}</p>
-            </div>
+            <WordCard key={word.id} word={word} />
           ))}
         </div>
       )}
