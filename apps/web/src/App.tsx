@@ -1,6 +1,5 @@
+import { fetchWords } from '@/api';
 import { useQuery } from '@tanstack/react-query';
-
-import { fetchWords } from '@src/api';
 
 import './App.css';
 
