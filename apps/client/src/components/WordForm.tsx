@@ -1,5 +1,4 @@
-import { createWord } from '@/api';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useWords } from '@/hooks';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 interface WordFormValues {
@@ -9,19 +8,12 @@ interface WordFormValues {
 
 export const WordForm = () => {
   const { handleSubmit, register, reset } = useForm<WordFormValues>();
-
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: createWord,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['words'] });
-      reset();
-    },
-  });
+  const { addWord, isAddingWord } = useWords();
 
   const onSubmit: SubmitHandler<WordFormValues> = (data) => {
-    mutation.mutate(data);
+    addWord(data, {
+      onSuccess: () => reset(),
+    });
   };
 
   return (
@@ -45,10 +37,10 @@ export const WordForm = () => {
         />
         <button
           className='bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 px-6 py-3 rounded-xl font-bold text-white transition-colors'
-          disabled={mutation.isPending}
+          disabled={isAddingWord}
           type='submit'
         >
-          {mutation.isPending ? '추가 중...' : '추가하기'}
+          {isAddingWord ? '추가 중...' : '추가하기'}
         </button>
       </div>
     </form>
