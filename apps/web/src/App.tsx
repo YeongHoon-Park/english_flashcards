@@ -1,6 +1,6 @@
 import '@/App.css';
 import { fetchWords } from '@/api';
-import { WordCard } from '@/components';
+import { WordCard, WordForm } from '@/components';
 import { useQuery } from '@tanstack/react-query';
 
 const App = () => {
@@ -17,6 +17,9 @@ const App = () => {
   return (
     <div className='flex flex-col items-center bg-slate-50 px-4 py-12 min-h-screen'>
       <h1 className='mb-8 font-bold text-slate-800 text-4xl'>📚 My English Flashcards</h1>
+
+      {/* 폼 */}
+      <WordForm />
 
       {/* 로딩 상태 처리 */}
       {isLoading && (

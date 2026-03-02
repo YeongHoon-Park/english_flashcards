@@ -9,3 +9,9 @@ export const fetchWords = async (): Promise<Word[]> => {
 
   return response.data;
 };
+
+export const createWord = async (newWord: Omit<Word, 'id'>): Promise<Word> => {
+  const response = await axios.post<Word>(`${API_BASE_URL}/words`, newWord);
+
+  return response.data;
+};
