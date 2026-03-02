@@ -41,6 +41,19 @@ app.post('/api/words', (req, res) => {
   res.status(201).json(newWord);
 });
 
+app.delete('/api/words/:id', (req, res) => {
+  const { id } = req.params;
+  const initialLength = mockWords.length;
+
+  mockWords = mockWords.filter((word) => word.id !== id);
+
+  if (mockWords.length < initialLength) {
+    res.status(200).json({ message: 'The Words was successfully deleted.' });
+  } else {
+    res.status(404).json({ message: "Can't find the Words." });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
   console.log(`Shared message: ${testMessage}`);
