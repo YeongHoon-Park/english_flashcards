@@ -7,6 +7,14 @@ const app = express();
 const port = 3001;
 
 app.use(cors({ origin: '*' }));
+app.use(express.json());
+
+// Mock
+let mockWords: Word[] = [
+  { id: '1', term: 'Serendipity', definition: '뜻밖의 발견 (우연한 행운)' },
+  { id: '2', term: 'Ephemeral', definition: '수명이 짧은, 덧없는' },
+  { id: '3', term: 'Ubiquitous', definition: '어디에나 있는, 아주 흔한' },
+];
 
 app.get('/', (req, res) => {
   res.json({
@@ -16,15 +24,21 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/words', (req, res) => {
-  const mockWords: Word[] = [
-    { id: '1', term: 'Serendipity', definition: '뜻밖의 발견 (우연한 행운)' },
-    { id: '2', term: 'Ephemeral', definition: '수명이 짧은, 덧없는' },
-    { id: '3', term: 'Ubiquitous', definition: '어디에나 있는, 아주 흔한' },
-  ];
+  res.json(mockWords);
+});
 
-  setTimeout(() => {
-    res.json(mockWords);
-  }, 1000);
+app.post('/api/words', (req, res) => {
+  const { term, definition } = req.body;
+
+  const newWord: Word = {
+    id: Date.now().toString(),
+    term,
+    definition,
+  };
+
+  mockWords.push(newWord);
+
+  res.status(201).json(newWord);
 });
 
 app.listen(port, () => {
