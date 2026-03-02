@@ -1,4 +1,4 @@
-import { createWord, fetchWords } from '@/api';
+import { createWord, deleteWord, fetchWords } from '@/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useWords = () => {
@@ -14,11 +14,15 @@ export const useWords = () => {
     queryKey: ['words'],
   });
 
-  const {
-    mutate: addWord, //
-    isPending: isAddingWord,
-  } = useMutation({
+  const { mutate: addWord, isPending: isAddingWord } = useMutation({
     mutationFn: createWord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['words'] });
+    },
+  });
+
+  const { mutate: removeWord, isPending: isRemovingWord } = useMutation({
+    mutationFn: deleteWord,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['words'] });
     },
@@ -32,5 +36,8 @@ export const useWords = () => {
 
     addWord,
     isAddingWord,
+
+    removeWord,
+    isRemovingWord,
   };
 };
