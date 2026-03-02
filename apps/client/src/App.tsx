@@ -1,18 +1,9 @@
 import '@/App.css';
-import { fetchWords } from '@/api';
 import { WordCard, WordForm } from '@/components';
-import { useQuery } from '@tanstack/react-query';
+import { useWords } from '@/hooks';
 
 const App = () => {
-  const {
-    data: words,
-    error,
-    isError,
-    isLoading,
-  } = useQuery({
-    queryFn: fetchWords,
-    queryKey: ['words'],
-  });
+  const { words, isWordsLoading, isWordsError, wordsError } = useWords();
 
   return (
     <div className='flex flex-col items-center bg-slate-50 px-4 py-12 min-h-screen'>
@@ -22,14 +13,14 @@ const App = () => {
       <WordForm />
 
       {/* 로딩 상태 처리 */}
-      {isLoading && (
+      {isWordsLoading && (
         <p className='text-slate-500 text-lg animate-pulse'>단어장을 불러오는 중입니다...</p>
       )}
 
       {/* 에러 상태 처리 */}
-      {isError && (
+      {isWordsError && wordsError && (
         <p className='bg-red-50 p-4 rounded-lg text-red-500'>
-          에러가 발생했습니다: {error.message}
+          에러가 발생했습니다: {wordsError.message}
         </p>
       )}
 
