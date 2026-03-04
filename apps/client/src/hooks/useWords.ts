@@ -1,9 +1,10 @@
 import { createWord, deleteWord, fetchWords } from '@/api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { useMutationFeedback } from '@/hooks/useMutationFeedback';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useWords = () => {
-  const queryClient = useQueryClient();
+  const addFeedback = useMutationFeedback('POST', ['words']);
+  const removeFeedback = useMutationFeedback('DELETE', ['words']);
 
   const {
     data: words,
@@ -17,24 +18,12 @@ export const useWords = () => {
 
   const { mutate: addWord, isPending: isAddingWord } = useMutation({
     mutationFn: createWord,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['words'] });
-      toast.success('Added successfully.');
-    },
-    onError: () => {
-      toast.error('Adding failed. Please try again.');
-    },
+    ...addFeedback,
   });
 
   const { mutate: removeWord, isPending: isRemovingWord } = useMutation({
     mutationFn: deleteWord,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['words'] });
-      toast.success('Removed successfully.');
-    },
-    onError: () => {
-      toast.error('Removing failed. Please try again.');
-    },
+    ...removeFeedback,
   });
 
   return {
