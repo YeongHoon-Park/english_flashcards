@@ -29,3 +29,16 @@ export const deleteWord = (id: string): boolean => {
 
   return false;
 };
+
+export const updateWord = (id: string, term: string, definition: string): Word | null => {
+  const word = mockWords.find((w) => w.id === id);
+
+  if (word) {
+    word.term = term;
+    word.definition = definition;
+
+    return word;
+  }
+
+  return null;
+};
