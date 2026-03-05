@@ -28,3 +28,19 @@ export const deleteWordHandler = (req: Request<{ id: string }>, res: Response) =
     });
   }
 };
+
+export const updateWordHandler = (req: Request<{ id: string }>, res: Response) => {
+  const { id } = req.params;
+  const { term, definition } = req.body;
+  const updatedWord = wordsService.updateWord(id, term, definition);
+
+  if (updatedWord) {
+    res.status(200).json({
+      message: 'The Words was successfully updated.',
+    });
+  } else {
+    res.status(404).json({
+      message: "Can't find the words.",
+    });
+  }
+};
