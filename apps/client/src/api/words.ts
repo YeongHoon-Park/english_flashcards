@@ -16,6 +16,15 @@ export const createWord = async (newWord: Omit<Word, 'id'>): Promise<Word> => {
   return response.data;
 };
 
+export const updateWord = async (word: Word): Promise<Word> => {
+  const response = await axios.put(`${API_BASE_URL}/words/${word.id}`, {
+    term: word.term,
+    definition: word.definition,
+  });
+
+  return response.data;
+};
+
 export const deleteWord = async (id: string): Promise<void> => {
   await axios.delete(`${API_BASE_URL}/words/${id}`);
 };

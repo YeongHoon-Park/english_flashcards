@@ -1,9 +1,10 @@
-import { createWord, deleteWord, fetchWords } from '@/api';
+import { createWord, deleteWord, fetchWords, updateWord } from '@/api';
 import { useMutationFeedback } from '@/hooks/useMutationFeedback';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useWords = () => {
   const addFeedback = useMutationFeedback('POST', ['words']);
+  const editFeedback = useMutationFeedback('PUT', ['words']);
   const removeFeedback = useMutationFeedback('DELETE', ['words']);
 
   const {
@@ -21,6 +22,11 @@ export const useWords = () => {
     ...addFeedback,
   });
 
+  const { mutate: editWord, isPending: isEditingWord } = useMutation({
+    mutationFn: updateWord,
+    ...editFeedback,
+  });
+
   const { mutate: removeWord, isPending: isRemovingWord } = useMutation({
     mutationFn: deleteWord,
     ...removeFeedback,
@@ -34,6 +40,9 @@ export const useWords = () => {
 
     addWord,
     isAddingWord,
+
+    editWord,
+    isEditingWord,
 
     removeWord,
     isRemovingWord,
