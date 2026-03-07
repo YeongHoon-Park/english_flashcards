@@ -1,44 +1,48 @@
-import { mockWords } from '@/constants/mockData.js';
+import { prisma } from '@/utils/prisma.js';
 
-import { Word } from '@repo/schema';
-
-export const getAllWords = (): Word[] => {
-  return mockWords;
+export const getAllWords = async () => {
+  return await prisma.word.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
 };
 
-export const createWord = (term: string, definition: string): Word => {
-  const newWord: Word = {
-    id: Date.now().toString(),
-    term,
-    definition,
-  };
-
-  mockWords.push(newWord);
-
-  return newWord;
+export const createWord = async (term: string, definition: string) => {
+  return await prisma.word.create({
+    data: {
+      term,
+      definition,
+    },
+  });
 };
 
-export const deleteWord = (id: string): boolean => {
-  const index = mockWords.findIndex((word) => word.id === id);
+export const updateWord = async (id: string, term: string, definition: string) => {
+  try {
+    return await prisma.word.update({
+      where: {
+        id,
+      },
+      data: {
+        term,
+        definition,
+      },
+    });
+  } catch (error) {
+    return null;
+  }
+};
 
-  if (index !== -1) {
-    mockWords.splice(index, 1);
+export const deleteWord = async (id: string) => {
+  try {
+    await prisma.word.delete({
+      where: {
+        id,
+      },
+    });
 
     return true;
+  } catch (error) {
+    return false;
   }
-
-  return false;
-};
-
-export const updateWord = (id: string, term: string, definition: string): Word | null => {
-  const word = mockWords.find((w) => w.id === id);
-
-  if (word) {
-    word.term = term;
-    word.definition = definition;
-
-    return word;
-  }
-
-  return null;
 };
