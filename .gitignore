@@ -41,3 +41,6 @@ GEMINI.md
 
 # Auto Logic
 midnight_push.sh
+
+*.db
+*.db-journal
